@@ -56,6 +56,12 @@ public class MLP {
                     miniBatch.add(trainingData.get(j));
                 }
 
+                // forward propagation
+                for (Image image : miniBatch) {
+                    forward(image);
+                }
+
+                // backpropagation
                 float[][] hidden1GradAcc = new float[nInput][nHidden1];   // 784 x 256
                 float[] bias1GradAcc = new float[nHidden1];               // 1 x 256
                 float[][] hidden2GradAcc = new float[nHidden1][nHidden2]; // 256 x 256
@@ -63,12 +69,6 @@ public class MLP {
                 float[][] outGradAcc = new float[nHidden2][nClasses];     // 256 x 10
                 float[] biasoutGradAcc = new float[nClasses];             // 1 x 10
 
-                // forward propagation
-                for (Image image : miniBatch) {
-                    forward(image);
-                }
-
-                // backpropagation
                 for (Image image : miniBatch) {
                     // 1 x 10
                     float[] gradOutput = image.actualOutput;
@@ -116,18 +116,18 @@ public class MLP {
     }
 
     private static void forward(Image image) {
-        float[] hidden1Output = MathUtils.multiply(image.input, hidden1);
-        hidden1Output = MathUtils.add(hidden1Output, bias1);
+        float[] hidden1Output = MathUtils.multiply(image.input, hidden1);    // (1x784) x (784x256) = (1x256)
+        hidden1Output = MathUtils.add(hidden1Output, bias1);                 // (1x256) + (1x256) = (1x256)
         image.hidden1ReluGrad = MathUtils.reluGrad(hidden1Output);
         hidden1Output = MathUtils.relu(hidden1Output);
         image.hidden1OutputAct = hidden1Output;
-        float[] hidden2Output = MathUtils.multiply(hidden1Output, hidden2);
-        hidden2Output = MathUtils.add(hidden2Output, bias2);
+        float[] hidden2Output = MathUtils.multiply(hidden1Output, hidden2);  // (1x256) x (256x256) = (1x256)
+        hidden2Output = MathUtils.add(hidden2Output, bias2);                 // (1x256) + (1x256) = (1x256)
         image.hidden2ReluGrad = MathUtils.reluGrad(hidden2Output);
         hidden2Output = MathUtils.relu(hidden2Output);
         image.hidden2OutputAct = hidden2Output;
-        float[] outOutput = MathUtils.multiply(hidden2Output, out);
-        outOutput = MathUtils.add(outOutput, biasout);
+        float[] outOutput = MathUtils.multiply(hidden2Output, out);          // (1x256) x (256x10) = (1x10)
+        outOutput = MathUtils.add(outOutput, biasout);                       // (1x10) + (1x10) = (1x10)
         outOutput = MathUtils.softmax(outOutput);
         image.actualOutput = outOutput;
         int argmaxindex = -1;
@@ -158,7 +158,7 @@ public class MLP {
     }
 
     private static void test() {
-        int numCorrect = 0;
+        float numCorrect = 0;
         for (Image image : testData) {
             forward(image);
             if (image.actualDigit.equals(image.goldDigit)) {
