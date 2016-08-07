@@ -83,7 +83,7 @@ public class MLP {
                     float[] gradHidden2 = MathUtils.multiply(gradOutput, MathUtils.transpose(out));
                     gradHidden2 = MathUtils.elemMult(gradHidden2, image.hidden2ReluGrad);
                     // 256 x 256
-                    hidden2GradAcc = MathUtils.add(hidden2GradAcc, MathUtils.multiply(gradHidden2, image.hidden1OutputAct));
+                    hidden2GradAcc = MathUtils.add(hidden2GradAcc, MathUtils.multiply(image.hidden1OutputAct, gradHidden2));
                     // 1 x 256
                     bias2GradAcc = MathUtils.add(bias2GradAcc, gradHidden2);
 

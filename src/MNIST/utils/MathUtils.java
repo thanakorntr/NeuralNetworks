@@ -1,5 +1,7 @@
 package MNIST.utils;
 
+import edu.princeton.cs.introcs.StdRandom;
+
 /**
  * Created by Thanakorn on 7/3/16.
  */
@@ -182,7 +184,7 @@ public class MathUtils {
     }
 
     public static float getRandom() {
-        return -0.5f + (float)Math.random();
+        return (float)StdRandom.gaussian(0, 0.01);
     }
 
 }
