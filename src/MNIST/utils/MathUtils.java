@@ -37,13 +37,16 @@ public class MathUtils {
         return result;
     }
 
-    // TODO
     public static float[][] multiply(float[] v1, float[] v2) {
         if (v1 == null || v2 == null || v1.length == 0 || v2.length == 0) {
             throw new IllegalArgumentException();
         }
         float[][] result = new float[v1.length][v2.length];
-
+        for (int i = 0; i < v1.length; i++) {
+            for (int j = 0; j < v2.length; j++) {
+                result[i][j] = v1[i] * v2[j];
+            }
+        }
         return result;
     }
 
@@ -134,6 +137,52 @@ public class MathUtils {
             }
         }
         return result;
+    }
+
+    public static float[] elemMult(float[] vector1, float[] vector2) {
+        if (vector1 == null || vector2 == null || vector1.length != vector2.length) {
+            throw new IllegalArgumentException();
+        }
+        float[] result = new float[vector1.length];
+        for (int i = 0; i < vector1.length; i++) {
+            result[i] = vector1[i] * vector2[i];
+        }
+        return result;
+    }
+
+    public static float[] reluGrad(float[] vector1) {
+        if (vector1 == null || vector1.length == 0) {
+            throw new IllegalArgumentException();
+        }
+        float[] result = new float[vector1.length];
+        for (int i = 0; i < vector1.length; i++) {
+            result[i] = vector1[i] > 0 ? 1 : 0;
+        }
+        return result;
+    }
+
+    public static void random(float[][] matrix) {
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            throw new IllegalArgumentException();
+        }
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                matrix[i][j] = getRandom();
+            }
+        }
+    }
+
+    public static void random(float[] vector) {
+        if (vector == null || vector.length == 0) {
+            throw new IllegalArgumentException();
+        }
+        for (int i = 0; i < vector.length; i++) {
+            vector[i] = getRandom();
+        }
+    }
+
+    public static float getRandom() {
+        return -0.5f + (float)Math.random();
     }
 
 }

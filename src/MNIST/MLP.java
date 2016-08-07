@@ -17,12 +17,12 @@ public class MLP {
     private static final String trainingFilePath = "src/MNIST/data/mnist_train.csv";
     private static final String testingFilePath = "src/MNIST/data/mnist_test.csv";
 
-    private static float[][] hidden1;
-    private static float[] bias1;
-    private static float[][] hidden2;
-    private static float[] bias2;
-    private static float[][] out;
-    private static float[] biasout;
+    private static float[][] hidden1;  // 784 x 256
+    private static float[] bias1;      // 1 x 256
+    private static float[][] hidden2;  // 256 x 256
+    private static float[] bias2;      // 1 x 256
+    private static float[][] out;      // 256 x 10
+    private static float[] biasout;    // 1 x 10
 
     private static int nHidden1 = 256;
     private static int nHidden2 = 256;
@@ -44,21 +44,24 @@ public class MLP {
         initParameters();
 
         for (int epoch = 0; epoch < numEpochs; epoch++) {
+            System.out.println("Training epoch: " + epoch);
+
             // shuffle at the beginning of each epoch
             Collections.shuffle(trainingData);
 
+            // mini-batch training
             for (int i = 0; i < trainingData.size(); i += batchSize) {
                 List<Image> miniBatch = new ArrayList<>();
                 for (int j = i; j < trainingData.size() && j < i + batchSize; j++) {
                     miniBatch.add(trainingData.get(j));
                 }
 
-                float[][] hidden1GradAcc = new float[nInput][nHidden1];
-                float[] bias1GradAcc = new float[nHidden1];
-                float[][] hidden2GradAcc = new float[nHidden1][nHidden2];
-                float[] bias2GradAcc = new float[nHidden2];
-                float[][] outGradAcc = new float[nHidden2][nClasses];
-                float[] biasoutGradAcc = new float[nClasses];
+                float[][] hidden1GradAcc = new float[nInput][nHidden1];   // 784 x 256
+                float[] bias1GradAcc = new float[nHidden1];               // 1 x 256
+                float[][] hidden2GradAcc = new float[nHidden1][nHidden2]; // 256 x 256
+                float[] bias2GradAcc = new float[nHidden2];               // 1 x 256
+                float[][] outGradAcc = new float[nHidden2][nClasses];     // 256 x 10
+                float[] biasoutGradAcc = new float[nClasses];             // 1 x 10
 
                 // forward propagation
                 for (Image image : miniBatch) {
@@ -78,10 +81,28 @@ public class MLP {
 
                     // 1 x 256
                     float[] gradHidden2 = MathUtils.multiply(gradOutput, MathUtils.transpose(out));
-                    // relu
+                    gradHidden2 = MathUtils.elemMult(gradHidden2, image.hidden2ReluGrad);
+                    // 256 x 256
+                    hidden2GradAcc = MathUtils.add(hidden2GradAcc, MathUtils.multiply(gradHidden2, image.hidden1OutputAct));
+                    // 1 x 256
+                    bias2GradAcc = MathUtils.add(bias2GradAcc, gradHidden2);
 
-
+                    // 1 x 256
+                    float[] gradHidden1 = MathUtils.multiply(gradHidden2, MathUtils.transpose(hidden2));
+                    gradHidden1 = MathUtils.elemMult(gradHidden1, image.hidden1ReluGrad);
+                    // 784 x 256
+                    hidden1GradAcc = MathUtils.add(hidden1GradAcc, MathUtils.multiply(image.input, gradHidden1));
+                    // 1 x 256
+                    bias1GradAcc = MathUtils.add(bias1GradAcc, gradHidden1);
                 }
+
+                // divide by number of training datum
+                hidden1GradAcc = MathUtils.multconst(hidden1GradAcc, 1f / miniBatch.size());
+                bias1GradAcc = MathUtils.multconst(bias1GradAcc, 1f / miniBatch.size());
+                hidden2GradAcc = MathUtils.multconst(hidden2GradAcc, 1f / miniBatch.size());
+                bias2GradAcc = MathUtils.multconst(bias2GradAcc, 1f / miniBatch.size());
+                outGradAcc = MathUtils.multconst(outGradAcc, 1f / miniBatch.size());
+                biasoutGradAcc = MathUtils.multconst(biasoutGradAcc, 1f / miniBatch.size());
 
                 // update weight parameters
                 hidden1 = MathUtils.add(hidden1, MathUtils.multconst(hidden1GradAcc, -learningRate));
@@ -97,10 +118,12 @@ public class MLP {
     private static void forward(Image image) {
         float[] hidden1Output = MathUtils.multiply(image.input, hidden1);
         hidden1Output = MathUtils.add(hidden1Output, bias1);
+        image.hidden1ReluGrad = MathUtils.reluGrad(hidden1Output);
         hidden1Output = MathUtils.relu(hidden1Output);
         image.hidden1OutputAct = hidden1Output;
         float[] hidden2Output = MathUtils.multiply(hidden1Output, hidden2);
         hidden2Output = MathUtils.add(hidden2Output, bias2);
+        image.hidden2ReluGrad = MathUtils.reluGrad(hidden2Output);
         hidden2Output = MathUtils.relu(hidden2Output);
         image.hidden2OutputAct = hidden2Output;
         float[] outOutput = MathUtils.multiply(hidden2Output, out);
@@ -126,7 +149,12 @@ public class MLP {
         out = new float[nHidden2][nClasses];
         biasout = new float[nClasses];
 
-        // TODO
+        MathUtils.random(hidden1);
+        MathUtils.random(bias1);
+        MathUtils.random(hidden2);
+        MathUtils.random(bias2);
+        MathUtils.random(out);
+        MathUtils.random(biasout);
     }
 
     private static void test() {

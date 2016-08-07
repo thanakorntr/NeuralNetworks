@@ -11,7 +11,9 @@ public class Image {
 
     public float[] goldOutput;
 
-    public float[] actualOutput;
-    public float[] hidden1OutputAct;
-    public float[] hidden2OutputAct;
+    public float[] hidden1OutputAct;  // hidden1 output after activation
+    public float[] hidden1ReluGrad;
+    public float[] hidden2OutputAct;  // hidden2 output after activation
+    public float[] hidden2ReluGrad;
+    public float[] actualOutput;      // final layer output after activation
 }
