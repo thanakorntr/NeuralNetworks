@@ -1,6 +1,6 @@
 package MNIST;
 
-import MNIST.utils.MathUtils;
+import utils.MathUtils;
 import MNIST.utils.MnistUtils;
 
 import java.util.ArrayList;

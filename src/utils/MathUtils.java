@@ -1,4 +1,4 @@
-package MNIST.utils;
+package utils;
 
 import edu.princeton.cs.introcs.StdRandom;
 
