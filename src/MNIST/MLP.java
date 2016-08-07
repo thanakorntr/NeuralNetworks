@@ -1,7 +1,7 @@
-package MNIST;
+package mnist;
 
 import utils.MathUtils;
-import MNIST.utils.MnistUtils;
+import mnist.utils.MnistUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,8 +16,8 @@ public class MLP {
 
     private static List<Image> trainingData;
     private static List<Image> testData;
-    private static final String trainingFilePath = "src/MNIST/data/mnist_train.csv";
-    private static final String testingFilePath = "src/MNIST/data/mnist_test.csv";
+    private static final String trainingFilePath = "data/dataset/mnist/mnist_train.csv";
+    private static final String testingFilePath = "data/dataset/mnist/mnist_test.csv";
 
     private static float[][] hidden1;  // 784 x 256
     private static float[] bias1;      // 1 x 256

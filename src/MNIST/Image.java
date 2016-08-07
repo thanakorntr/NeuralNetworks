@@ -1,4 +1,4 @@
-package MNIST;
+package mnist;
 
 /**
  * Created by Thanakorn on 7/3/16.

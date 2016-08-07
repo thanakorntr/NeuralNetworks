@@ -1,6 +1,6 @@
-package MNIST.utils;
+package mnist.utils;
 
-import MNIST.Image;
+import mnist.Image;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
