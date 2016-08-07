@@ -8,6 +8,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * With this setting, Accuracy: 97.41%
+ *
  * Created by Thanakorn on 7/3/16.
  */
 public class MLP {
