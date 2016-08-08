@@ -187,4 +187,118 @@ public class MathUtils {
         return (float)StdRandom.gaussian(0, 0.01);
     }
 
+    public static float sigmoid(float val) {
+        return 1f / (1f + (float)Math.exp(-val));
+    }
+
+    public static float sigmoidDerivative(float val) {
+        float sigmoid = sigmoid(val);
+        return sigmoid * (1 - sigmoid);
+    }
+
+    public static float[] sigmoid(float[] vector1) {
+        if (vector1 == null || vector1.length == 0) {
+            throw new IllegalArgumentException();
+        }
+        float[] result = new float[vector1.length];
+        for (int i = 0; i < vector1.length; i++) {
+            result[i] = sigmoid(vector1[i]);
+        }
+        return result;
+    }
+
+    public static float[][] sigmoid(float[][] matrix) {
+        if (matrix == null || matrix.length == 0) {
+            throw new IllegalArgumentException();
+        }
+        float[][] result = new float[matrix.length][matrix[0].length];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                result[i][j] = sigmoid(matrix[i][j]);
+            }
+        }
+        return result;
+    }
+
+    public static float[] sigmoidDerivative(float[] vector1) {
+        if (vector1 == null || vector1.length == 0) {
+            throw new IllegalArgumentException();
+        }
+        float[] result = new float[vector1.length];
+        for (int i = 0; i < vector1.length; i++) {
+            result[i] = sigmoidDerivative(vector1[i]);
+        }
+        return result;
+    }
+
+    public static float[][] sigmoidDerivative(float[][] matrix) {
+        if (matrix == null || matrix.length == 0) {
+            throw new IllegalArgumentException();
+        }
+        float[][] result = new float[matrix.length][matrix[0].length];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                result[i][j] = sigmoidDerivative(matrix[i][j]);
+            }
+        }
+        return result;
+    }
+
+    public static float tanh(float val) {
+        return (float)Math.tanh(val);
+    }
+
+    public static float tanhDerivative(float val) {
+        float tanh = tanh(val);
+        return 1 - tanh * tanh;
+    }
+
+    public static float[] tanh(float[] vector1) {
+        if (vector1 == null || vector1.length == 0) {
+            throw new IllegalArgumentException();
+        }
+        float[] result = new float[vector1.length];
+        for (int i = 0; i < vector1.length; i++) {
+            result[i] = tanh(vector1[i]);
+        }
+        return result;
+    }
+
+    public static float[][] tanh(float[][] matrix) {
+        if (matrix == null || matrix.length == 0) {
+            throw new IllegalArgumentException();
+        }
+        float[][] result = new float[matrix.length][matrix[0].length];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                result[i][j] = tanh(matrix[i][j]);
+            }
+        }
+        return result;
+    }
+
+    public static float[] tanhDerivative(float[] vector1) {
+        if (vector1 == null || vector1.length == 0) {
+            throw new IllegalArgumentException();
+        }
+        float[] result = new float[vector1.length];
+        for (int i = 0; i < vector1.length; i++) {
+            result[i] = tanhDerivative(vector1[i]);
+        }
+        return result;
+    }
+
+    public static float[][] tanhDerivative(float[][] matrix) {
+        if (matrix == null || matrix.length == 0) {
+            throw new IllegalArgumentException();
+        }
+        float[][] result = new float[matrix.length][matrix[0].length];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                result[i][j] = tanhDerivative(matrix[i][j]);
+            }
+        }
+        return result;
+    }
+
 }
