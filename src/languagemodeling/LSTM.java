@@ -55,12 +55,30 @@ public class LSTM {
     private static void train() {
         initialize();
 
-        int pointer = 0;
         for (int epoch = 0; epoch < numEpochs; epoch++) {
 
-            for (int i = pointer; i < data.size() && i < pointer + sequenceLength; i++) {
-                
+            // mini-batch
+            for (int pointer = 0; pointer < data.size(); pointer += sequenceLength) {
+                List<Integer> inputIndices = new ArrayList<>();
+                List<Integer> targetIndices = new ArrayList<>();
+                for (int i = pointer; i < data.size() && i < pointer + sequenceLength; i++) {
+                    inputIndices.add(charMap.get(data.get(i)));
+                    if (i + 1 < data.size()) {
+                        targetIndices.add(charMap.get(data.get(i + 1)));
+                    }
+                }
+
+                // forward propagation
+                float[] prevHidden = new float[hiddenSize];
+                List<float[]> hiddenOutputs = new ArrayList<>();
+                List<float[]> contextOutputs = new ArrayList<>();
+                for (int t = 0; t < inputIndices.size(); t++) {
+                    
+                }
+
+                // backpropagation
             }
+
 
         }
     }

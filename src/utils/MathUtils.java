@@ -100,6 +100,20 @@ public class MathUtils {
         return result;
     }
 
+    public static float[] add(float[]... vectors) {
+        if (vectors == null || vectors.length == 0) {
+            throw new IllegalArgumentException();
+        }
+        float[] result = new float[vectors[0].length];
+        for (float[] vector : vectors) {
+            if (vector.length != result.length) {
+                throw new IllegalArgumentException();
+            }
+            result = MathUtils.add(result, vector);
+        }
+        return result;
+    }
+
     public static float[] relu(float[] v1) {
         if (v1 == null || v1.length == 0) {
             throw new IllegalArgumentException();
